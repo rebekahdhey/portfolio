@@ -1,0 +1,207 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Poppins:ital,wght@0,200;0,300;0,400;1,200;1,300&display=swap');
+
+:root {
+  --light: #ffffff;
+  --dark: #000000;
+  --red: #e63946;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+html.loading,
+html.loading body {
+  overflow: hidden;
+  height: 100%;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.nav-logo img {
+  width: auto;
+  height: auto;
+  max-height: 3rem;
+  object-fit: contain;
+}
+
+a, 
+p {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  line-height: 1.25;
+  color: var(--dark);
+}
+
+/* Interactive gradient background */
+#gradient-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(60px);
+}
+
+nav {
+  position: fixed;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between; 
+  align-items: flex-start;
+}
+
+.nav-items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+}
+
+.hero-overlay {
+  position: absolute;
+  width: 100%;
+  height: 100svh;
+  background-color: var(--dark);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  will-change: clip-path;
+  z-index: 0;
+}
+
+.hero-overlay .counter {
+  position: absolute;
+  right: 2rem;
+  bottom: 2rem;
+  color: var(--light);
+}
+
+.hero-overlay .counter h1 {
+  font-family: 'Poppins', sans-serif;
+  font-size: 4rem;
+  font-weight: 200;
+}
+
+.overlay-text-container {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  height: 2rem;
+  overflow: hidden;
+}
+
+.overlay-text-container .overlay-text {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(2rem);
+  will-change: transform;
+}
+
+.overlay-text-container .overlay-text p {
+  color: var(--light);
+  height: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.hero-images {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: center;
+  gap: 10vw;
+  will-change: gap;
+  z-index: 1; 
+}
+
+.hero-images .img {
+  width: 10vw;
+  aspect-ratio: 5/7;
+  transform: translateY(50%) scale(0.5);
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  opacity: 0;
+  will-change: transform, clip-path, opacity;
+}
+
+.hero-header {
+  position: absolute;
+  bottom: 2rem;
+  width: 100%;
+  z-index: -1;
+}
+
+.hero-header h1 {
+  text-transform: uppercase;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 11.5vw;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  line-height: 0.85;
+}
+
+.hero-header h1 .word {
+  transform: translateY(100%);
+  will-change: transform;
+}
+
+/* Nickname swap */
+.hero-header .nickname {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  font-weight: 200;
+  color: var(--dark); /* or var(--red), whatever you want it to look like */
+  opacity: 0;
+  transform: translateY(1rem);
+  will-change: transform, opacity;
+}
+
+@media (max-width: 1000px) {
+  nav {
+    padding: 1rem;
+  }
+
+  .hero-overlay .counter {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .hero-images {
+    padding: 0 0.5rem;
+    gap: 2.5vw;
+  }
+
+  .hero-images .img {
+    width: 20vw;
+    aspect-ratio: 5/7;
+  }
+}
