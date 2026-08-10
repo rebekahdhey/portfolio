@@ -26,7 +26,7 @@ if (!gsap) {
     document.documentElement.classList.remove("loading");
   }, 4000);
 
-  fetch('partials/about.html')
+  fetch('about/about.html')
     .then(res => res.text())
     .then(html => {
       document.getElementById('about-container').innerHTML = html;
@@ -36,6 +36,16 @@ if (!gsap) {
       ScrollTrigger.refresh();
     })
     .catch(err => console.error('Failed to load about section:', err));
+
+  fetch('skills/skills.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('skills-container').innerHTML = html;
+      initSmoothNav();
+      initSkillsAnimation();
+      ScrollTrigger.refresh();
+    })
+    .catch(err => console.error('Failed to load skills section:', err));
 
   document.addEventListener("DOMContentLoaded", () => {
     initGradientBg();
