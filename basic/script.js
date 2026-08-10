@@ -37,6 +37,24 @@ if (!gsap) {
     })
     .catch(err => console.error('Failed to load about section:', err));
 
+  fetch('experience/experience.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('experience-container').innerHTML = html;
+      initSmoothNav();
+      ScrollTrigger.refresh();
+    })
+    .catch(err => console.error('Failed to load about section:', err));
+
+  fetch('projects/projects.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('projects-container').innerHTML = html;
+      initSmoothNav();
+      ScrollTrigger.refresh();
+    })
+    .catch(err => console.error('Failed to load about section:', err));
+
   fetch('skills/skills.html')
     .then(res => res.text())
     .then(html => {
