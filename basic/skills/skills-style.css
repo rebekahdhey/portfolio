@@ -12,13 +12,21 @@
   align-items: center;
   flex-direction: column;
   gap: 50px;
-  padding: 80px 0 80px 0;
+  padding: 80px 20px 80px 20px;
 }
 
 h2 {
   font-size: 30px;
   font-weight: 500;
   text-transform: uppercase;
+}
+
+.skills-container {
+  width: min(100%, 1100px);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
 }
 
 .skills-container .item {
@@ -28,7 +36,7 @@ h2 {
   justify-content: center;
   align-items: center;
   gap: 10px;
-  font-size: 80px;
+  font-size: 50px;
   border-bottom: 2px solid #000;
   cursor: pointer;
   transition: all 0.3s ease-in-out;
@@ -62,4 +70,62 @@ h2 {
 
 .w1 {
   text-align: right;
+}
+
+@media (max-width: 900px) {
+  .skills-body {
+    gap: 35px;
+    padding: 60px 16px;
+  }
+
+  .skills-container .item {
+    font-size: clamp(1.8rem, 4.5vw, 3.8rem);
+    padding: 0.7em 0.75rem;
+    gap: 16px;
+  }
+
+  .skills-img {
+    width: 100px;
+    height: 70px;
+  }
+}
+
+@media (max-width: 640px) {
+  h2 {
+    font-size: 24px;
+  }
+
+  .skills-body {
+    gap: 28px;
+    padding: 40px 12px;
+  }
+
+  .skills-container .item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.85rem;
+    padding: 1rem 0;
+    font-size: clamp(1.6rem, 5vw, 2.8rem);
+  }
+
+  .skills-img {
+    width: 90px;
+    height: 65px;
+    flex: 0;
+  }
+
+  .item:hover {
+    gap: 0.85rem;
+  }
+
+  .item:hover .skills-img {
+    flex: 0;
+  }
+
+  .w1,
+  .w2 {
+    width: 100%;
+    text-align: center;
+  }
 }

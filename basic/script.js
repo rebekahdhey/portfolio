@@ -42,6 +42,7 @@ if (!gsap) {
     .then(html => {
       document.getElementById('experience-container').innerHTML = html;
       initSmoothNav();
+      initExperienceAnimation();
       ScrollTrigger.refresh();
     })
     .catch(err => console.error('Failed to load about section:', err));
