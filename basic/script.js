@@ -52,6 +52,7 @@ if (!gsap) {
     .then(html => {
       document.getElementById('projects-container').innerHTML = html;
       initSmoothNav();
+      initProjectsAnimation();
       ScrollTrigger.refresh();
     })
     .catch(err => console.error('Failed to load about section:', err));
@@ -67,7 +68,7 @@ if (!gsap) {
     .catch(err => console.error('Failed to load skills section:', err));
 
   document.addEventListener("DOMContentLoaded", () => {
-    initGradientBg();
+    initCursorGlow(); // was: initGradientBg();
     wrapWords(".full-name"); // <-- must run BEFORE the timeline references .word
 
     const counterProgress = document.querySelector(".counter h1");
@@ -218,53 +219,28 @@ function initAboutReveal() {
   });
 }
 
-function initGradientBg() {
-  const canvas = document.getElementById("gradient-bg");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+function initCursorGlow() {
+  if (window.matchMedia("(max-width: 900px)").matches) return;
 
-  let width, height;
-  const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-  const pos = { x: mouse.x, y: mouse.y };
+  const glow = document.createElement("div");
+  glow.className = "cursor-glow";
+  document.body.appendChild(glow);
 
-  function resize() {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
-  }
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let glowX = mouseX;
+  let glowY = mouseY;
 
-  function draw() {
-    pos.x += (mouse.x - pos.x) * 0.05;
-    pos.y += (mouse.y - pos.y) * 0.05;
-
-    ctx.clearRect(0, 0, width, height);
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(0, 0, width, height);
-
-    const radius = Math.max(width, height) * 0.45;
-    const gradient = ctx.createRadialGradient(
-      pos.x, pos.y, 0,
-      pos.x, pos.y, radius
-    );
-    gradient.addColorStop(0, "rgba(40, 40, 40, 0.7)");
-    gradient.addColorStop(0.5, "rgba(75, 75, 75, 0.4)");
-    gradient.addColorStop(1, "rgba(110, 110, 110, 0)");
-
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, width, height);
-
-    requestAnimationFrame(draw);
-  }
-
-  window.addEventListener("resize", resize);
   window.addEventListener("mousemove", (e) => {
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-  });
-  window.addEventListener("mouseleave", () => {
-    mouse.x = width / 2;
-    mouse.y = height / 2;
+    mouseX = e.clientX;
+    mouseY = e.clientY;
   });
 
-  resize();
-  draw();
+  function animate() {
+    glowX += (mouseX - glowX) * 0.07;
+    glowY += (mouseY - glowY) * 0.07;
+    glow.style.transform = `translate(${glowX}px, ${glowY}px) translate(-50%, -50%)`;
+    requestAnimationFrame(animate);
+  }
+  animate();
 }
