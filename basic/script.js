@@ -11,7 +11,7 @@ if (!gsap) {
 
   const lenis = new Lenis({
     duration: 1.2,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
   });
 
@@ -45,7 +45,7 @@ if (!gsap) {
       initExperienceAnimation();
       ScrollTrigger.refresh();
     })
-    .catch(err => console.error('Failed to load about section:', err));
+    .catch(err => console.error('Failed to load experience section:', err));
 
   fetch('projects/projects.html')
     .then(res => res.text())
@@ -55,7 +55,7 @@ if (!gsap) {
       initProjectsAnimation();
       ScrollTrigger.refresh();
     })
-    .catch(err => console.error('Failed to load about section:', err));
+    .catch(err => console.error('Failed to load projects section:', err));
 
   fetch('skills/skills.html')
     .then(res => res.text())
@@ -67,8 +67,20 @@ if (!gsap) {
     })
     .catch(err => console.error('Failed to load skills section:', err));
 
+  fetch('contact/contact.html')
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById('contact-container').innerHTML = html;
+      initSmoothNav();
+      initContactAnimation();
+      ScrollTrigger.refresh();
+    })
+    .catch(err => console.error('Failed to load contact section:', err));
+
   document.addEventListener("DOMContentLoaded", () => {
     initCursorGlow(); // was: initGradientBg();
+    initNavActiveState();
+    initNavTheme();
     wrapWords(".full-name"); // <-- must run BEFORE the timeline references .word
 
     const counterProgress = document.querySelector(".counter h1");
@@ -198,6 +210,96 @@ function initSmoothNav() {
       });
     });
   });
+}
+
+function initNavActiveState() {
+  const navLinks = document.querySelectorAll('.nav-items a[href^="#"]');
+  if (!navLinks.length) return;
+
+  function getSections() {
+    return Array.from(navLinks)
+      .map(link => document.querySelector(link.getAttribute('href')))
+      .filter(Boolean);
+  }
+
+  function updateActive() {
+    const sections = getSections();
+    if (!sections.length) return;
+
+    const viewportPosition = window.innerHeight * 0.4;
+    let activeIndex = 0;
+
+    sections.forEach((section, index) => {
+      const rect = section.getBoundingClientRect();
+      if (rect.top <= viewportPosition) {
+        activeIndex = index;
+      }
+    });
+
+    navLinks.forEach(link => link.classList.remove('active'));
+    if (navLinks[activeIndex]) {
+      navLinks[activeIndex].classList.add('active');
+    }
+  }
+
+  updateActive();
+  window.addEventListener('scroll', updateActive, { passive: true });
+  window.addEventListener('resize', updateActive);
+}
+
+function initNavTheme() {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+
+  // Temporarily hides nav so elementFromPoint sees what's actually behind it
+  function sampleElementAt(x, y) {
+    const prevVisibility = nav.style.visibility;
+    nav.style.visibility = 'hidden';
+    const el = document.elementFromPoint(x, y);
+    nav.style.visibility = prevVisibility;
+    return el;
+  }
+
+  // Walks up the tree until it finds a non-transparent background-color
+  function getEffectiveBackground(el) {
+    while (el) {
+      const bg = window.getComputedStyle(el).backgroundColor;
+      if (bg && bg !== 'rgba(0, 0, 0, 0)' && bg !== 'transparent') {
+        return bg;
+      }
+      el = el.parentElement;
+    }
+    return 'rgb(255, 255, 255)';
+  }
+
+  function luminanceOf(rgbString) {
+    const nums = rgbString.match(/[\d.]+/g);
+    if (!nums) return 255;
+    const [r, g, b] = nums.map(Number);
+    return 0.299 * r + 0.587 * g + 0.114 * b;
+  }
+
+  function updateNavTheme() {
+    const x = window.innerWidth / 2;
+    const y = 40; // just below the nav's top padding
+    const el = sampleElementAt(x, y);
+    const bg = el ? getEffectiveBackground(el) : 'rgb(255, 255, 255)';
+    const isDarkBg = luminanceOf(bg) < 130;
+
+    nav.classList.toggle('nav-on-dark', isDarkBg);
+  }
+
+  updateNavTheme();
+
+  // Runs every frame so it stays correct through GSAP/clip-path/scroll
+  // animations, not just on native scroll events
+  function loop() {
+    updateNavTheme();
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  window.addEventListener('resize', updateNavTheme);
 }
 
 function initAboutReveal() {

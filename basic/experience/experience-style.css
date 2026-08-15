@@ -183,6 +183,11 @@
 }
 
 @media (max-width: 900px) {
+  .experience-body {
+    padding: 60px 16px 60px 16px;
+    gap: 32px;
+  }
+
   .experience-container {
     flex-direction: column;
     gap: 40px;
@@ -200,10 +205,18 @@
   .map > div {
     flex: 1 1 45%;
     border-top: 1px solid var(--color-line);
+    /* The JS sets an inline height based on the matching section's
+       desktop-flow height, which balloons once sections stack full-width
+       on mobile. Force it back to natural sizing here. */
+    height: auto !important;
   }
 
   .header p:nth-child(1) {
     font-size: 18px;
+  }
+
+  .sections > div {
+    margin-bottom: 80px;
   }
 }
 
@@ -218,11 +231,41 @@
 
   .map > div {
     flex: 1 1 auto;
+    padding: 18px 0 18px 16px;
+  }
+
+  .map > div:hover,
+  .map > div.active {
+    padding-left: 22px;
+  }
+
+  .map > div p:nth-child(1) {
+    font-size: 12px;
+  }
+
+  .map > div p:nth-child(2) {
+    font-size: 11px;
   }
 
   .header {
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
+  }
+
+  .header p:nth-child(1) {
+    font-size: 17px;
+  }
+
+  .header p:nth-child(2) {
+    white-space: normal;
+  }
+
+  .copy h3 {
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
+  }
+
+  .sections > div {
+    margin-bottom: 60px;
   }
 }
