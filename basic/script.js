@@ -162,6 +162,11 @@ if (!gsap) {
       duration: 1,
       ease: "hop",
     }, "-=0.5")
+    .to(".face-mockup", {
+      yPercent: -100,
+      duration: 1,
+      ease: "hop",
+    }, "-=0.2")
     .to(".full-name .word", {
       y: "0",
       duration: 0.75,
