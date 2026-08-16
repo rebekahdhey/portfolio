@@ -16,18 +16,25 @@ function initProjectsAnimation() {
   const containerHeight = projectNamesContainer.offsetHeight;
   const imagesHeight = projectImagesContainer.offsetHeight;
 
-  // Renamed to match what's used below, and now actually declared.
   const moveDistanceIndex = spotlightSectionHeight - spotlightSectionPadding * 2 - projectIndexHeight;
   const moveDistanceImages = spotlightSectionHeight - spotlightSectionPadding * 2 - imagesHeight;
   const moveDistanceNames = spotlightSectionHeight - spotlightSectionPadding * 2 - containerHeight;
 
-  const imgActivationThreshold = window.innerHeight / 2;
+  // Pre-measure each image's offset/height once, up front — not every frame.
+  const imgMetrics = Array.from(projectImgs).map((img) => ({
+    el: img,
+    offsetTop: img.offsetTop,
+    height: img.offsetHeight,
+  }));
+
+  const viewportCenter = window.innerHeight / 2;
 
   ScrollTrigger.create({
     trigger: ".spotlight",
     start: "top top",
     end: `+=${window.innerHeight * 5}`,
     pin: true,
+    pinType: "transform",
     pinSpacing: true,
     scrub: 1,
     onUpdate: (self) => {
@@ -42,25 +49,24 @@ function initProjectsAnimation() {
         y: progress * moveDistanceIndex,
       });
 
+      const containerY = progress * moveDistanceImages;
+
       gsap.set(projectImagesContainer, {
-        y: progress * moveDistanceImages,
+        y: containerY,
       });
 
-      projectImgs.forEach((img) => {
-        const imgRect = img.getBoundingClientRect();
-        const imgTop = imgRect.top;
-        const imgBottom = imgRect.bottom;
+      // containerTop is where the container's top edge currently sits
+      // in the viewport, given its base position + the y offset above.
+      const containerTop = spotlightSectionPadding + containerY;
 
-        if (
-          imgTop <= imgActivationThreshold && imgBottom >= imgActivationThreshold
-        ) {
-          gsap.set(img, {
-            opacity: 1,
-          });
+      imgMetrics.forEach(({ el, offsetTop, height }) => {
+        const imgTop = containerTop + offsetTop;
+        const imgBottom = imgTop + height;
+
+        if (imgTop <= viewportCenter && imgBottom >= viewportCenter) {
+          gsap.set(el, { opacity: 1 });
         } else {
-          gsap.set(img, {
-            opacity: 0.5,
-          });
+          gsap.set(el, { opacity: 0.5 });
         }
       });
 
@@ -76,21 +82,10 @@ function initProjectsAnimation() {
           y: projectProgress * moveDistanceNames,
         });
 
-        if (projectProgress > 0 && projectProgress < 1) {
-          gsap.set(p, {
-            color: "#000",
-          });
-        } else {
-          gsap.set(p, {
-            color: "#4a4a4a",
-          });
-        }
+        gsap.set(p, {
+          color: projectProgress > 0 && projectProgress < 1 ? "#000" : "#4a4a4a",
+        });
       });
     },
   });
 }
-
-document.addEventListener("DOMContentLoaded", () => {
-  gsap.registerPlugin(ScrollTrigger);
-  initProjectsAnimation();
-});
