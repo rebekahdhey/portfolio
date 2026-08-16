@@ -13,6 +13,7 @@ if (!gsap) {
     duration: 1.2,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
+    syncTouch: true,  
   });
 
   lenis.on("scroll", ScrollTrigger.update);
@@ -122,6 +123,10 @@ if (!gsap) {
       delay: 0.75,
     });
 
+    const dockLeft = window.matchMedia("(min-width: 901px)").matches
+      ? "24vw"
+      : "50vw";
+
     revealTl.to(".img", {
       y: 0,
       opacity: 1,
@@ -141,48 +146,43 @@ if (!gsap) {
     }, "<")
     .to(".img:not(.hero-img)", {
       clipPath: "polygon(0 0, 100% 0, 100% 0%, 0% 0%)",
+      // width: 0,
+      // marginInline: 0,
       duration: 1,
       stagger: 0.1,
-      ease: "hop",
-    })
-    .to(".hero-img", {
-      y: "-5vw",
-      scale: 2,
-      duration: 1,
       ease: "hop",
     })
     .to(".hero-overlay", {
       clipPath: "polygon(0 0, 100% 0, 100% 0%, 0% 0%)",
       duration: 1,
       ease: "hop",
-    })
+    }, "-=0.5")
+    .to(".hero-images", {
+      left: dockLeft,
+      duration: 1,
+      ease: "hop",
+    }, "-=0.5")
     .to(".full-name .word", {
       y: "0",
       duration: 0.75,
       stagger: 0.1,
       ease: "power3.out",
-    }, "-0.5")
-    .to(".full-name", {
-      scale: 0.7,
-      duration: 0.75,
-      ease: "hop",
-    }, "<")
-    .to(".full-name", {
-      opacity: 0,
-      y: "-1rem",
-      duration: 0.75,
-      ease: "hop",
-      delay: 1,
-    })
-    .to(".nickname", {
+    }, "-=0.5")
+    .to(".profession", {
       opacity: 1,
       y: 0,
-      duration: 1,
+      duration: 0.75,
+      ease: "hop",
+    }, "-=0.25")
+    .to(".hero-bio", {
+      opacity: 1,
+      y: 0,
+      duration: 0.75,
       ease: "hop",
       onComplete: () => {
         document.documentElement.classList.remove("loading");
       },
-    }, "<+0.1");
+    }, "-=0.35");
   });
 }
 

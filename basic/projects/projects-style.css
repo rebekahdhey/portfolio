@@ -19,7 +19,24 @@
   color: #333;
 }
 
-.projects-body .intro,
+.projects-body .intro {
+  width: 100%;
+  padding: 80px 20px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.projects-body .intro h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 30px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
 .projects-body .outro {
   display: flex;
   justify-content: center;
@@ -27,15 +44,6 @@
   text-align: center;
   height: 100svh;
   width: 100%;
-}
-
-.projects-body .intro h2 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: #1a1a1a;
 }
 
 .projects-body .spotlight {
@@ -79,6 +87,11 @@
   aspect-ratio: 16/9;
   opacity: 0.5;
   transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.hero-img-prj {
+  aspect-ratio: 6/10;
   overflow: hidden;
 }
 
@@ -172,6 +185,14 @@
    ================================ */
 
 @media (max-width: 1000px) {
+    .projects-body .intro {
+        padding: 60px 16px 32px;
+    }
+
+    .projects-body .intro h2 {
+        font-size: 24px;
+    }
+
     .projects-body .outro {
         padding: 4rem 2rem;
         gap: 1.5rem;
@@ -210,6 +231,14 @@
    ================================ */
 
 @media (max-width: 600px) {
+    .projects-body .intro {
+        padding: 48px 16px 24px;
+    }
+
+    .projects-body .intro h2 {
+        font-size: 20px;
+    }
+
     .projects-body .outro {
         padding: 3rem 1.25rem;
         gap: 1rem;

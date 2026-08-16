@@ -26,13 +26,27 @@ h1 {
   text-align: center;
 }
 
-.about-hero, 
-.outro, 
+/* Mockup batches — 2x2 grid with gaps instead of a single centered row.
+   Height is now content-sized (was 100svh) so there's no dead viewport
+   space padding it out before the copy that follows. */
+.about-hero,
+.outro {
+  position: relative;
+  width: 100%;
+  padding: 4rem 2rem 6rem;
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  grid-template-rows: repeat(2, 1fr);
+  justify-content: center;
+  gap: 1.5rem;
+  overflow: hidden;
+}
+
 .body-about {
   position: relative;
   width: 100%;
-  height: 100svh;
-  padding: 2rem;
+  height: auto;
+  padding: 3rem 2rem 5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -41,7 +55,7 @@ h1 {
 
 .hero-img,
 .outro-img {
-  width: 500px;
+  /* width: min(500px, 42vw); */
   aspect-ratio: 16/10;
   overflow: hidden;
 }
@@ -63,10 +77,17 @@ h1 {
   padding: 0 2rem;
   background-color: #1a1a1a;
   will-change: transform;
+  display: flex;               
+  justify-content: center;     
+  align-items: center;         
 }
 
 .services-header img {
   object-fit: contain;
+  width: auto;     
+  height: auto;        
+  max-width: 100%;      
+  max-height: 100%;      
 }
 
 .services-header:nth-child(1),
@@ -105,6 +126,35 @@ h1 {
   will-change: clip-path;
 }
 
+/* --- Emphasis paragraph (services-copy) ---
+   This paragraph carries an <em>, which attr(data-text) above can't
+   render. Instead of the ::before/attr trick, it duplicates its own
+   marked-up content into a base layer + a clipped reveal layer, both
+   inheriting the same --clip-value from the JS. The default ::before
+   reveal is switched off here so it doesn't double up underneath. */
+.animate-text.has-emphasis::before {
+  content: none;
+}
+
+.animate-text.has-emphasis {
+  font-weight: 400;
+}
+
+.animate-text .text-reveal {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  color: #fff;
+  clip-path: inset(0 0 var(--clip-value) 0);
+  will-change: clip-path;
+}
+
+.animate-text em {
+  font-style: italic;
+  font-weight: 500;
+}
+
 @media (max-width: 1000px) {
   h1 {
     font-size: 2rem;
@@ -113,5 +163,11 @@ h1 {
 
   .animate-text{
     width: 100%;
+  }
+
+  .about-hero,
+  .outro {
+    gap: 0.85rem;
+    padding: 3.5rem 1.25rem 2rem;
   }
 }

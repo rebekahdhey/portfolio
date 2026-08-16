@@ -101,6 +101,7 @@ nav {
   position: relative;
   padding-bottom: 2px;
   opacity: 0.6;
+  white-space: nowrap;
   transition: color 0.4s ease, opacity 0.3s ease;
 }
 
@@ -149,8 +150,15 @@ nav.nav-on-dark .nav-logo img {
   }
 
   .nav-items {
-    gap: 1.1rem;
+    gap: 1rem;
     padding: 0.55rem 1.1rem;
+    max-width: 60vw;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-items::-webkit-scrollbar {
+    display: none;
   }
 
   .nav-items a {
@@ -176,8 +184,10 @@ nav.nav-on-dark .nav-logo img {
   .nav-items {
     grid-column: 2;
     justify-self: end;
+    max-width: 72vw;
     gap: 0.7rem;
     padding: 0.5rem 0.9rem;
+    overflow-x: auto;
   }
 
   .nav-items a {
@@ -187,13 +197,14 @@ nav.nav-on-dark .nav-logo img {
 
 @media (max-width: 400px) {
   .nav-items {
-    gap: 0.45rem;
+    max-width: 68vw;
+    gap: 0.5rem;
     padding: 0.45rem 0.7rem;
   }
 
   .nav-items a {
-    font-size: 0.55rem;
-    letter-spacing: 0.05em;
+    font-size: 0.52rem;
+    letter-spacing: 0.04em;
   }
 }
 
@@ -249,16 +260,19 @@ nav.nav-on-dark .nav-logo img {
   align-items: center;
 }
 
+/* Images fan out full-size, centered on screen — identical to the
+   original loading reveal. JS docks this block to the left once the
+   reveal finishes, instead of it being cramped from the start. */
 .hero-images {
   position: absolute;
   top: 50%;
-  transform: translateY(-50%);
-  width: 100%;
-  padding: 0 2rem;
+  left: 50vw;
+  transform: translate(-50%, -50%);
   display: flex;
+  align-items: center;
   justify-content: center;
   gap: 10vw;
-  will-change: gap;
+  will-change: gap, left;
   z-index: 1;
 }
 
@@ -268,42 +282,93 @@ nav.nav-on-dark .nav-logo img {
   transform: translateY(50%) scale(0.5);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   opacity: 0;
-  will-change: transform, clip-path, opacity;
+  will-change: transform, clip-path, opacity, width, margin;
 }
 
-.hero-header {
+/* Name/profession/bio — positioned independently of the images so it
+   doesn't steal layout width from the fan-out animation. Sits behind
+   the overlay (like the original hero-header) until the overlay wipes. */
+.hero-text {
   position: absolute;
-  bottom: 2rem;
-  width: 100%;
+  top: 50%;
+  left: 40vw;
+  transform: translateY(-50%);
   z-index: -1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  max-width: 84vw;
 }
 
-.hero-header h1 {
+.hero-text .full-name {
   text-transform: uppercase;
-  text-align: center;
   font-family: 'Poppins', sans-serif;
-  font-size: 11.5vw;
+  font-size: 3.2vw;
   font-weight: 300;
   letter-spacing: 0.01em;
-  line-height: 0.85;
+  line-height: 0.95;
 }
 
-.hero-header h1 .word {
+.hero-text .full-name .word {
+  display: inline-block;
   transform: translateY(100%);
   will-change: transform;
 }
 
-/* Nickname swap */
-.hero-header .nickname {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  font-weight: 200;
-  color: var(--dark); /* or var(--red), whatever you want it to look like */
+.hero-text .profession {
+  margin-top: 0.85rem;
   opacity: 0;
   transform: translateY(1rem);
   will-change: transform, opacity;
+}
+
+.hero-text .hero-bio {
+  margin-top: 1.4rem;
+  text-transform: none;
+  font-size: 0.85rem;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  line-height: 1.65;
+  color: var(--dark);
+  opacity: 0;
+  transform: translateY(1rem);
+  will-change: transform, opacity;
+}
+
+@media (max-width: 900px) {
+  .hero-images {
+    top: 50%;              /* was 36% — now vertically centered */
+    gap: 6vw;
+  }
+
+  .hero-images .img {
+    width: 14vw;
+  }
+
+  .hero-text {
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -50%);   /* was translateY(-50%) with left:8vw */
+    max-width: 84vw;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-text .full-name {
+    font-size: 9vw;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-text .full-name {
+    font-size: 11vw;
+  }
+
+  .hero-text .hero-bio {
+    font-size: 0.75rem;
+    max-width: 34rem;
+  }
 }
 
 .cursor-glow {
@@ -333,14 +398,6 @@ nav.nav-on-dark .nav-logo img {
 }
 
 @media (max-width: 1000px) {
-  nav {
-    padding: 1rem;
-  }
-
-  .nav-items {
-    gap: 2px;
-  }
-
   .hero-overlay .counter {
     right: 1rem;
     bottom: 1rem;

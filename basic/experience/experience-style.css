@@ -141,14 +141,28 @@
   border-bottom: 1px solid var(--color-line);
 }
 
-.header p:nth-child(1) {
+.header-main {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.header .company {
   font-family: 'Poppins', sans-serif;
   font-size: 22px;
   font-weight: 300;
   letter-spacing: 0.01em;
 }
 
-.header p:nth-child(2) {
+.header .role {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-dim);
+}
+
+.header .period {
   font-size: 13px;
   font-weight: 300;
   color: var(--color-dim);
@@ -172,10 +186,34 @@
   color: #fff;
 }
 
-.section-1 .header p:nth-child(1) { color: var(--color-section-1); }
-.section-2 .header p:nth-child(1) { color: var(--color-section-2); }
-.section-3 .header p:nth-child(1) { color: var(--color-section-3); }
-.section-4 .header p:nth-child(1) { color: var(--color-section-4); }
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.tags span {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border: 1px solid var(--color-line);
+  border-radius: 999px;
+  color: var(--color-dim);
+}
+
+.section-1 .header .company { color: var(--color-section-1); }
+.section-2 .header .company { color: var(--color-section-2); }
+.section-3 .header .company { color: var(--color-section-3); }
+.section-4 .header .company { color: var(--color-section-4); }
+
+.section-1 .tags span { border-color: var(--color-section-1); color: var(--color-section-1); }
+.section-2 .tags span { border-color: var(--color-section-2); color: var(--color-section-2); }
+.section-3 .tags span { border-color: var(--color-section-3); color: var(--color-section-3); }
+.section-4 .tags span { border-color: var(--color-section-4); color: var(--color-section-4); }
 
 .whitespace {
   width: 100%;
@@ -211,7 +249,7 @@
     height: auto !important;
   }
 
-  .header p:nth-child(1) {
+  .header .company {
     font-size: 18px;
   }
 
@@ -253,11 +291,11 @@
     gap: 6px;
   }
 
-  .header p:nth-child(1) {
+  .header .company {
     font-size: 17px;
   }
 
-  .header p:nth-child(2) {
+  .header .period {
     white-space: normal;
   }
 
